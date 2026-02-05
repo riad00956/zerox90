@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Security | Cyber 20 UN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg: #020617; --purple: #8b5cf6; --blue: #3b82f6; --cyan: #06b6d4;
+            --text: #f8fafc; --glass: rgba(15, 23, 42, 0.7); --border: rgba(255, 255, 255, 0.1);
+        }
+        * { box-sizing: border-box; transition: all 0.3s ease; }
+        body {
+            margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg);
+            color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center;
+        }
+
+        .change-card {
+            background: var(--glass); backdrop-filter: blur(25px);
+            border: 1px solid var(--border); border-radius: 30px;
+            width: 100%; max-width: 400px; padding: 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .header-icon {
+            width: 60px; height: 60px; background: rgba(139, 92, 246, 0.1);
+            border-radius: 20px; display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 20px; color: var(--purple); border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        h2 { text-align: center; margin-bottom: 30px; font-weight: 700; letter-spacing: -0.5px; }
+
+        .input-box { margin-bottom: 20px; }
+        label { display: block; font-size: 12px; margin-bottom: 8px; opacity: 0.6; padding-left: 5px; }
+        
+        input {
+            width: 100%; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border);
+            color: white; padding: 15px; border-radius: 12px; outline: none;
+        }
+        input:focus { border-color: var(--purple); box-shadow: 0 0 15px rgba(139, 92, 246, 0.2); }
+
+        .btn-update {
+            width: 100%; padding: 16px; border-radius: 12px; border: none;
+            background: linear-gradient(45deg, var(--purple), var(--blue));
+            color: white; font-weight: 700; cursor: pointer; margin-top: 10px;
+        }
+        .btn-update:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(139, 92, 246, 0.4); }
+
+        .back-btn {
+            display: block; text-align: center; margin-top: 20px;
+            color: var(--text); opacity: 0.5; text-decoration: none; font-size: 13px;
+        }
+        .back-btn:hover { opacity: 1; color: var(--cyan); }
+    </style>
+</head>
+<body>
+
+    <div class="change-card">
+        <div class="header-icon"><i data-lucide="lock" size="30"></i></div>
+        <h2>Update <span style="color:var(--purple)">Password</span></h2>
+
+        <form action="/update_password" method="POST">
+            <div class="input-box">
+                <label>Current Password</label>
+                <input type="password" name="old_password" placeholder="••••••••" required>
+            </div>
+            <div class="input-box">
+                <label>New Password</label>
+                <input type="password" name="new_password" placeholder="••••••••" required>
+            </div>
+            <div class="input-box">
+                <label>Confirm New Password</label>
+                <input type="password" name="confirm_password" placeholder="••••••••" required>
+            </div>
+            
+            <button type="submit" class="btn-update">Secure Identity</button>
+        </form>
+
+        <a href="/profi" class="back-btn"><i data-lucide="arrow-left" size="14"></i> Back to Profile</a>
+
+        {% with m = get_flashed_messages() %}
+            {% if m %}
+            <p style="text-align:center; color:#ef4444; font-size:12px; margin-top:15px;">{{ m[0] }}</p>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>
