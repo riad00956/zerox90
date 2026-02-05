@@ -1,9 +1,0 @@
-[build]
-dockerfile = "Dockerfile"
-
-[deploy]
-startCommand = "python app.py"
-
-[[services]]
-port = 8000
-protocol = "tcp"
