@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Profile | 20 UN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg: #020617; --purple: #8b5cf6; --blue: #3b82f6; --cyan: #06b6d4;
+            --text: #f8fafc; --glass: rgba(15, 23, 42, 0.7); --border: rgba(255, 255, 255, 0.1);
+        }
+        * { box-sizing: border-box; transition: all 0.3s ease; }
+        body {
+            margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg);
+            color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center;
+        }
+
+        /* Profile Card Design */
+        .profile-card {
+            background: var(--glass); backdrop-filter: blur(25px);
+            border: 1px solid var(--border); border-radius: 35px;
+            width: 100%; max-width: 450px; padding: 40px;
+            position: relative; overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(139, 92, 246, 0.1);
+        }
+
+        .profile-card::before {
+            content: ''; position: absolute; top: -10%; right: -10%; width: 150px; height: 150px;
+            background: radial-gradient(circle, var(--purple) 0%, transparent 70%);
+            opacity: 0.3; z-index: -1;
+        }
+
+        /* Avatar Styling */
+        .avatar-container {
+            width: 120px; height: 120px; margin: 0 auto 20px;
+            border-radius: 50%; padding: 5px;
+            background: linear-gradient(45deg, var(--purple), var(--cyan));
+            box-shadow: 0 0 25px rgba(139, 92, 246, 0.5);
+        }
+        .avatar-inner {
+            width: 100%; height: 100%; border-radius: 50%;
+            background: #0f172a; display: flex; align-items: center; justify-content: center;
+        }
+
+        .user-name { font-size: 26px; font-weight: 700; margin-bottom: 5px; letter-spacing: -0.5px; }
+        .user-role { color: var(--cyan); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 25px; }
+
+        /* Stats/Info Grid */
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+        .info-box {
+            background: rgba(255,255,255,0.03); padding: 15px; border-radius: 18px;
+            border: 1px solid var(--border); text-align: left;
+        }
+        .info-box p { margin: 0; font-size: 11px; opacity: 0.5; text-transform: uppercase; }
+        .info-box span { font-size: 14px; font-weight: 600; color: var(--text); }
+
+        .btn-action {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            width: 100%; padding: 15px; border-radius: 15px; border: 1px solid var(--border);
+            background: rgba(255,255,255,0.05); color: white; text-decoration: none;
+            font-weight: 600; margin-bottom: 12px;
+        }
+        .btn-action:hover { background: var(--purple); border-color: var(--purple); transform: translateY(-3px); }
+
+        .btn-logout { background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: rgba(239, 68, 68, 0.2); }
+        .btn-logout:hover { background: #ef4444; color: white; border-color: #ef4444; }
+
+        .back-link { position: absolute; top: 25px; left: 25px; color: var(--text); opacity: 0.5; text-decoration: none; }
+        .back-link:hover { opacity: 1; }
+    </style>
+</head>
+<body>
+
+    <div class="profile-card">
+        <a href="/" class="back-link"><i data-lucide="chevron-left"></i></a>
+
+        <div class="avatar-container">
+            <div class="avatar-inner">
+                <i data-lucide="user" size="60" color="var(--cyan)"></i>
+            </div>
+        </div>
+
+        <div style="text-align: center;">
+            <div class="user-name">{{ session.user }}</div>
+            <div class="user-role">Cyber Developer</div>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-box">
+                <p>Status</p>
+                <span>Authorized</span>
+            </div>
+            <div class="info-box">
+                <p>Environment</p>
+                <span>Python 3.x</span>
+            </div>
+            <div class="info-box">
+                <p>Security</p>
+                <span>Encryption ON</span>
+            </div>
+            <div class="info-box">
+                <p>Access Level</p>
+                <span>Standard</span>
+            </div>
+        </div>
+
+        <div style="margin-top: 10px;">
+            <a href="/change" class="btn-action">
+                <i data-lucide="key-round" size="18"></i> Change Password
+            </div>
+            <a href="/logout" class="btn-action btn-logout">
+                <i data-lucide="log-out" size="18"></i> Terminate Session
+            </a>
+        </div>
+
+        <p style="text-align: center; font-size: 11px; opacity: 0.3; margin-top: 25px;">
+            UID: 0x{{ session.user[:4].upper() if session.user else '0000' }}-IDE-2026
+        </p>
+    </div>
+
+    <script>lucide.createIcons();</script>
+</body>
+                  </html>
+  
