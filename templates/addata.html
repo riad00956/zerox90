@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Database | Cyber Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg: #020617; --purple: #8b5cf6; --blue: #3b82f6; --cyan: #06b6d4;
+            --text: #f8fafc; --glass: rgba(15, 23, 42, 0.8); --border: rgba(255, 255, 255, 0.1);
+        }
+        * { box-sizing: border-box; transition: all 0.3s ease; }
+        body {
+            margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg);
+            color: var(--text); min-height: 100vh; padding: 20px;
+        }
+
+        .admin-container { max-width: 900px; margin: 40px auto; }
+
+        .header-section {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 30px; background: var(--glass); padding: 20px 30px;
+            border-radius: 20px; border: 1px solid var(--border);
+        }
+
+        /* User Table Styling */
+        .table-wrapper {
+            background: var(--glass); backdrop-filter: blur(20px);
+            border-radius: 24px; border: 1px solid var(--border);
+            overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        
+        thead { background: rgba(139, 92, 246, 0.1); }
+        th { padding: 20px; font-size: 13px; text-transform: uppercase; color: var(--purple); letter-spacing: 1px; }
+        td { padding: 18px 20px; border-bottom: 1px solid var(--border); font-size: 14px; }
+
+        .user-tag {
+            display: flex; align-items: center; gap: 10px; font-family: 'Fira Code', monospace;
+        }
+        .avatar-small {
+            width: 32px; height: 32px; background: var(--blue); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: bold;
+        }
+
+        .status-badge {
+            padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600;
+            background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .action-btn {
+            background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2);
+            padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px;
+        }
+        .action-btn:hover { background: #ef4444; color: white; }
+
+        .btn-back { color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 8px; font-size: 14px; opacity: 0.6; }
+        .btn-back:hover { opacity: 1; }
+    </style>
+</head>
+<body>
+
+    <div class="admin-container">
+        <div class="header-section">
+            <div>
+                <a href="/admin" class="btn-back"><i data-lucide="chevron-left" size="16"></i> Admin Home</a>
+                <h2 style="margin: 10px 0 0 0;">User <span style="color:var(--cyan)">Database</span></h2>
+            </div>
+            <i data-lucide="database" color="var(--purple)" size="32"></i>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Identity</th>
+                        <th>Access Level</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody">
+                    <tr>
+                        <td>
+                            <div class="user-tag">
+                                <div class="avatar-small">A</div>
+                                admin_master
+                            </div>
+                        </td>
+                        <td><span style="color:var(--purple)">ROOT</span></td>
+                        <td><div class="status-badge">ACTIVE</div></td>
+                        <td><button class="action-btn">Revoke</button></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="user-tag">
+                                <div class="avatar-small" style="background:var(--cyan)">U</div>
+                                developer_01
+                            </div>
+                        </td>
+                        <td>USER</td>
+                        <td><div class="status-badge">ACTIVE</div></td>
+                        <td><button class="action-btn">Revoke</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p style="text-align: center; margin-top: 30px; font-size: 12px; opacity: 0.4;">
+            Showing all registered entities in users.json system.
+        </p>
+    </div>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>
