@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Login | 20 UN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg: #020617; --purple: #8b5cf6; --blue: #3b82f6; --cyan: #06b6d4;
+            --text: #f8fafc; --glass: rgba(15, 23, 42, 0.6); --border: rgba(255, 255, 255, 0.1);
+        }
+        * { box-sizing: border-box; transition: all 0.4s ease; }
+        body {
+            margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg);
+            color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center;
+        }
+        .bg-glow {
+            position: fixed; top: 50%; left: 50%; width: 400px; height: 400px;
+            background: radial-gradient(circle, var(--purple) 0%, transparent 70%);
+            filter: blur(80px); opacity: 0.2; transform: translate(-50%, -50%); z-index: -1;
+        }
+        .card {
+            background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--border);
+            border-radius: 30px; padding: 40px; width: 100%; max-width: 400px;
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.15); text-align: center;
+        }
+        .logo-container { margin-bottom: 25px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .cyber-logo {
+            width: 50px; height: 50px; background: linear-gradient(135deg, var(--purple), var(--blue));
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+        }
+        h2 { margin: 0; background: linear-gradient(to right, var(--purple), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        input {
+            width: 100%; background: rgba(0, 0, 0, 0.2); border: 1px solid var(--border);
+            color: var(--text); padding: 16px; border-radius: 15px; margin-bottom: 15px; outline: none;
+        }
+        input:focus { border-color: var(--purple); box-shadow: 0 0 15px rgba(139, 92, 246, 0.3); }
+        .btn {
+            background: linear-gradient(45deg, var(--purple), var(--blue));
+            color: white; border: none; padding: 16px; border-radius: 15px;
+            font-weight: 700; cursor: pointer; width: 100%; font-size: 16px;
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(139, 92, 246, 0.4); }
+        .footer-text { margin-top: 20px; font-size: 13px; color: #64748b; }
+        .footer-text a { color: var(--purple); text-decoration: none; font-weight: 600; }
+        .copyright { position: fixed; bottom: 20px; font-size: 11px; opacity: 0.5; width: 100%; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="bg-glow"></div>
+    <div class="card">
+        <div class="logo-container">
+            <div class="cyber-logo"><i data-lucide="shield-lock" color="white" size="30"></i></div>
+            <h2>Cyber Login</h2>
+        </div>
+        
+        <form action="/login" method="POST">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="text" name="access_key" placeholder="Access Key" required>
+            <button type="submit" class="btn">Unlock Access</button>
+        </form>
+
+        <p class="footer-text">Don't have an account? <a href="/register">Sign Up</a></p>
+        
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <p style="color: #ef4444; font-size: 12px; margin-top: 10px;">{{ messages[0] }}</p>
+          {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="copyright">
+        &copy; 2026 <strong>CyberIDE</strong>. All Rights Reserved. <br> Powered by Cyber 20 UN Engine.
+    </div>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>
