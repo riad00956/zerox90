@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Cyber 20 UN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg: #020617; --purple: #8b5cf6; --blue: #3b82f6; --cyan: #06b6d4;
+            --text: #f8fafc; --glass: rgba(15, 23, 42, 0.8); --border: rgba(255, 255, 255, 0.1);
+        }
+        * { box-sizing: border-box; transition: all 0.3s ease; }
+        body {
+            margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg);
+            color: var(--text); min-height: 100vh; overflow-x: hidden;
+        }
+
+        .dashboard-container { max-width: 1000px; margin: 40px auto; padding: 20px; }
+
+        /* Navbar Style */
+        .admin-nav {
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--glass); backdrop-filter: blur(20px);
+            padding: 20px 30px; border-radius: 20px; border: 1px solid var(--border);
+            margin-bottom: 30px;
+        }
+
+        /* Stats Cards */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card {
+            background: var(--glass); padding: 25px; border-radius: 22px;
+            border: 1px solid var(--border); text-align: center;
+        }
+        .stat-card i { color: var(--purple); margin-bottom: 10px; }
+        .stat-card h3 { margin: 5px 0; font-size: 24px; color: var(--cyan); }
+        .stat-card p { margin: 0; font-size: 13px; opacity: 0.6; }
+
+        /* Settings Card */
+        .settings-card {
+            background: var(--glass); backdrop-filter: blur(25px);
+            border-radius: 28px; border: 1px solid var(--border); padding: 35px;
+            position: relative; overflow: hidden;
+        }
+        .settings-card::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 60%);
+            z-index: -1;
+        }
+
+        .input-group { margin-bottom: 25px; }
+        label { display: block; margin-bottom: 10px; font-weight: 600; font-size: 14px; color: var(--purple); }
+        input {
+            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+            color: white; padding: 16px; border-radius: 15px; font-size: 16px; outline: none;
+        }
+        input:focus { border-color: var(--cyan); box-shadow: 0 0 20px rgba(6, 182, 212, 0.2); }
+
+        .btn-save {
+            background: linear-gradient(45deg, var(--purple), var(--blue));
+            color: white; border: none; padding: 18px 40px; border-radius: 15px;
+            font-weight: 700; cursor: pointer; width: 100%; font-size: 16px;
+        }
+        .btn-save:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4); }
+
+        .copyright { text-align: center; margin-top: 50px; opacity: 0.4; font-size: 12px; }
+
+        /* Badge */
+        .key-badge {
+            background: rgba(139, 92, 246, 0.2); color: var(--purple);
+            padding: 5px 12px; border-radius: 8px; font-family: monospace; font-size: 18px;
+            border: 1px solid var(--purple);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <nav class="admin-nav">
+            <div style="display:flex; align-items:center; gap:12px;">
+                <div style="background:var(--purple); padding:8px; border-radius:10px;"><i data-lucide="shield-check" color="white"></i></div>
+                <h2 style="margin:0; font-size:20px;">Admin <span style="color:var(--cyan)">Access</span></h2>
+            </div>
+            <a href="/" style="color:white; text-decoration:none; font-size:14px; opacity:0.7;">Back to IDE <i data-lucide="arrow-right" size="14"></i></a>
+        </nav>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i data-lucide="users"></i>
+                <h3>Active</h3>
+                <p>System Users</p>
+            </div>
+            <div class="stat-card">
+                <i data-lucide="database"></i>
+                <h3>SQL</h3>
+                <p>Packages DB</p>
+            </div>
+            <div class="stat-card">
+                <i data-lucide="zap"></i>
+                <h3>Online</h3>
+                <p>Engine Status</p>
+            </div>
+        </div>
+
+        <div class="settings-card">
+            <div style="margin-bottom: 30px; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <h2 style="margin:0;">System Control</h2>
+                    <p style="opacity:0.6; font-size:13px;">Manage global security keys and configurations.</p>
+                </div>
+                <i data-lucide="settings-2" color="var(--purple)" size="32"></i>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.03); padding:20px; border-radius:20px; border:1px dashed var(--border); margin-bottom:30px; text-align:center;">
+                <p style="margin-bottom:10px; font-size:12px; opacity:0.7;">CURRENT ACCESS KEY</p>
+                <span class="key-badge">{{ settings.access_key }}</span>
+            </div>
+
+            <form action="/admin/update_key" method="POST">
+                <div class="input-group">
+                    <label>New Access Key</label>
+                    <input type="text" name="new_key" placeholder="Enter new secret key..." required>
+                </div>
+                <button type="submit" class="btn-save">Update Global Access Key</button>
+            </form>
+
+            {% with m = get_flashed_messages() %}
+                {% if m %}
+                <p style="text-align:center; color:#10b981; margin-top:15px; font-weight:600;">{{ m[0] }}</p>
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <div class="copyright">
+            &copy; 2026 <strong>Cyber 20 UN Engine</strong>. <br> Protected by Advanced Encryption Standards.
+        </div>
+    </div>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>
+
