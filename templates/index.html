@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cyber 20 UN | Mobile IDE</title>
+    <title>Cyber 20 UN | Dual Terminal IDE</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -12,89 +12,53 @@
             --bg: #020617; --purple: #8b5cf6; --blue: #3b82f6; --cyan: #06b6d4;
             --text: #f8fafc; --glass: rgba(15, 23, 42, 0.8); --border: rgba(255, 255, 255, 0.1);
         }
-
         * { box-sizing: border-box; transition: all 0.3s ease; }
         body {
             margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg);
             color: var(--text); min-height: 100vh; overflow-x: hidden;
             display: flex; flex-direction: column;
         }
-
         #bgCanvas { position: fixed; top: 0; left: 0; z-index: -1; }
-
-        /* Mobile First Container */
-        .container { 
-            width: 100%; max-width: 100%; padding: 15px; 
-            margin-top: 10px; position: relative; z-index: 1; 
-        }
-
+        .container { width: 100%; padding: 15px; margin-top: 10px; position: relative; z-index: 1; }
+        
         .header { 
             display: flex; justify-content: space-between; align-items: center; 
             background: var(--glass); padding: 12px 20px; border-radius: 20px;
             border: 1px solid var(--border); margin-bottom: 20px;
         }
+        .logo-text { font-size: 18px; font-weight: 800; background: linear-gradient(to right, var(--purple), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .card { background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--border); border-radius: 24px; padding: 20px; margin-bottom: 20px; }
         
-        .logo-text {
-            font-size: 18px; font-weight: 800;
-            background: linear-gradient(to right, var(--purple), var(--cyan));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-
-        .card {
-            background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--border);
-            border-radius: 24px; padding: 20px; margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        /* Responsive Code Editor */
         textarea {
-            background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border);
-            color: #10b981; padding: 15px; border-radius: 15px;
-            width: 100%; font-family: 'Fira Code', monospace; font-size: 13px;
-            height: 250px; resize: vertical; outline: none; margin-top: 10px;
+            background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border); color: #10b981; padding: 15px; border-radius: 15px;
+            width: 100%; font-family: 'Fira Code', monospace; font-size: 13px; height: 200px; outline: none; margin-top: 10px;
         }
 
+        /* Terminal Styles */
+        .terminal-container { display: flex; flex-direction: column; gap: 15px; }
         .terminal-box {
-            background: #000; color: #a5f3fc; height: 220px;
-            overflow-y: auto; padding: 12px; border-radius: 15px;
-            font-family: 'Fira Code', monospace; font-size: 12px;
-            border: 1px solid var(--cyan); line-height: 1.5;
+            background: #000; color: #a5f3fc; height: 160px; overflow-y: auto; padding: 12px; border-radius: 15px;
+            font-family: 'Fira Code', monospace; font-size: 11px; border: 1px solid var(--border); line-height: 1.4;
         }
+        .term-lib { border-color: var(--purple); }
+        .term-out { border-color: var(--cyan); }
+        
+        .term-label { font-size: 12px; font-weight: 600; margin-bottom: 5px; display: flex; align-items: center; gap: 6px; }
 
-        .cmd-input-group {
-            display: flex; gap: 8px; margin-top: 12px;
-        }
+        .cmd-input-group { display: flex; gap: 8px; margin-top: 10px; }
+        input[type="text"] { background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border); color: var(--text); padding: 10px; border-radius: 10px; flex-grow: 1; font-size: 13px; outline: none; }
+        .btn { background: linear-gradient(45deg, var(--purple), var(--blue)); color: white; border: none; padding: 10px 18px; border-radius: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn-play { width: 100%; margin-top: 10px; }
 
-        input[type="text"] {
-            background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border);
-            color: var(--text); padding: 12px; border-radius: 12px;
-            flex-grow: 1; font-size: 14px; outline: none;
-        }
-
-        .btn {
-            background: linear-gradient(45deg, var(--purple), var(--blue));
-            color: white; border: none; padding: 12px 20px; border-radius: 12px;
-            font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
-
-        .btn-play { width: 100%; margin-top: 10px; font-size: 16px; }
-
-        /* Status Badges */
-        .status-tag {
-            font-size: 10px; padding: 4px 8px; border-radius: 6px;
-            background: rgba(6, 182, 212, 0.1); color: var(--cyan);
-            border: 1px solid var(--cyan); text-transform: uppercase;
-        }
-
-        .log-line { border-left: 2px solid var(--purple); padding-left: 8px; margin-bottom: 4px; }
-        .log-success { color: #10b981; font-weight: bold; }
+        .log-success { color: #10b981; }
         .log-error { color: #ef4444; }
-
+        .spin { animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
     <canvas id="bgCanvas"></canvas>
-
     <div class="container">
         <header class="header">
             <div style="display: flex; align-items: center; gap: 8px;">
@@ -111,41 +75,34 @@
             <div class="card">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <div style="display:flex; align-items:center; gap:8px;">
-                        <i data-lucide="file-json" size="18" color="var(--purple)"></i>
-                        <input type="text" id="filename" value="main.py" style="border:none; background:none; width:100px; font-weight:600;">
+                        <i data-lucide="file-code" size="18" color="var(--purple)"></i>
+                        <input type="text" id="filename" value="main.py" style="border:none; background:none; color:white; width:80px; font-weight:600;">
                     </div>
-                    <span class="status-tag">Ready</span>
                 </div>
-                <textarea id="code" placeholder="# Start coding here..."></textarea>
-                <button onclick="runCode(this)" class="btn btn-play">
-                    <i data-lucide="rocket"></i> Deploy Engine
-                </button>
+                <textarea id="code" placeholder="# Write code here..."></textarea>
+                <button onclick="runCode(this)" class="btn btn-play"><i data-lucide="play"></i> Run Code</button>
             </div>
 
-            <div class="card">
-                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                    <span style="font-weight:600; font-size:14px;">Live System Logs</span>
-                    <i data-lucide="terminal" size="16" color="var(--cyan)"></i>
+            <div class="terminal-container">
+                <div class="card" style="margin-bottom: 0;">
+                    <div class="term-label" style="color: var(--purple);"><i data-lucide="package"></i> Library Installer Logs</div>
+                    <div id="lib-terminal" class="terminal-box term-lib">
+                        <div style="opacity:0.5;">[WAITING] Install libraries via command...</div>
+                    </div>
+                    <div class="cmd-input-group">
+                        <input type="text" id="cmd" placeholder="pip install ...">
+                        <button onclick="sendCmd()" class="btn"><i data-lucide="download" size="16"></i></button>
+                    </div>
                 </div>
-                <div id="terminal" class="terminal-box">
-                    <div style="color: #64748b;">[SYSTEM] Waiting for commands...</div>
-                </div>
-                <div class="cmd-input-group">
-                    <input type="text" id="cmd" placeholder="pip install pyTelegramBotAPI">
-                    <button onclick="sendCmd()" class="btn"><i data-lucide="send" size="18"></i></button>
+
+                <div class="card">
+                    <div class="term-label" style="color: var(--cyan);"><i data-lucide="terminal"></i> Execution Output</div>
+                    <div id="out-terminal" class="terminal-box term-out">
+                        <div style="opacity:0.5;">[READY] Program output will appear here...</div>
+                    </div>
                 </div>
             </div>
         </main>
-        {% else %}
-        <div class="card" style="text-align: center; padding: 40px 20px;">
-            <i data-lucide="lock" size="48" color="var(--purple)" style="margin-bottom: 15px;"></i>
-            <h3>Access Locked</h3>
-            <p style="font-size: 13px; opacity: 0.7;">Please identify yourself to access the core.</p>
-            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
-                <button class="btn" onclick="location.href='/login'">Login</button>
-                <button class="btn" style="background: rgba(255,255,255,0.05);" onclick="location.href='/register'">Register</button>
-            </div>
-        </div>
         {% endif %}
     </div>
 
@@ -153,67 +110,53 @@
         lucide.createIcons();
         const socket = io();
 
-        // Matrix-like Falling Background
+        // Background
         const canvas = document.getElementById('bgCanvas');
         const ctx = canvas.getContext('2d');
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.onresize = resize; resize();
-
-        let dots = Array(30).fill(0).map(() => ({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            s: Math.random() * 2 + 0.5,
-            o: Math.random()
-        }));
-
-        function drawBg() {
-            ctx.fillStyle = '#020617';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            dots.forEach(d => {
-                ctx.fillStyle = `rgba(139, 92, 246, ${d.o})`;
-                ctx.beginPath();
-                ctx.arc(d.x, d.y, 2, 0, Math.PI*2);
-                ctx.fill();
-                d.y += d.s;
-                if(d.y > canvas.height) d.y = -10;
-            });
-            requestAnimationFrame(drawBg);
-        }
+        function drawBg() { ctx.fillStyle = '#020617'; ctx.fillRect(0,0,canvas.width,canvas.height); requestAnimationFrame(drawBg); }
         drawBg();
 
-        // --- Live Log Logic ---
+        // --- Dual Terminal Logic ---
         socket.on('terminal_output', data => {
-            const term = document.getElementById('terminal');
-            let className = "log-line";
-            if(data.output.includes("Complete")) className += " log-success";
-            if(data.output.includes("Error") || data.output.includes("Failed")) className += " log-error";
+            const libTerm = document.getElementById('lib-terminal');
+            const outTerm = document.getElementById('out-terminal');
             
-            term.innerHTML += `<div class="${className}">${data.output}</div>`;
-            term.scrollTop = term.scrollHeight;
+            // যদি আউটপুটে pip বা installation সংক্রান্ত কিছু থাকে, তবে লাইব্রেরি টার্মিনালে যাবে
+            if(data.output.toLowerCase().includes('pip') || 
+               data.output.toLowerCase().includes('install') || 
+               data.output.toLowerCase().includes('requirement')) {
+                libTerm.innerHTML += `<div style="margin-bottom:2px;">${data.output}</div>`;
+                libTerm.scrollTop = libTerm.scrollHeight;
+            } else {
+                // বাকি সব আউটপুট এক্সিকিউশন টার্মিনালে যাবে
+                outTerm.innerHTML += `<div style="margin-bottom:2px;">> ${data.output}</div>`;
+                outTerm.scrollTop = outTerm.scrollHeight;
+            }
         });
 
         function sendCmd() {
             const cmdInput = document.getElementById('cmd');
-            const cmd = cmdInput.value;
-            if(!cmd) return;
-            
-            document.getElementById('terminal').innerHTML += `<div style="color:var(--purple); margin: 5px 0;">$ ${cmd}</div>`;
-            socket.emit('terminal_command', {command: cmd});
+            if(!cmdInput.value) return;
+            document.getElementById('lib-terminal').innerHTML += `<div style="color:var(--purple);">$ ${cmdInput.value}</div>`;
+            socket.emit('terminal_command', {command: cmdInput.value});
             cmdInput.value = '';
         }
 
         function runCode(btn) {
             const filename = document.getElementById('filename').value;
             const content = document.getElementById('code').value;
+            const outTerm = document.getElementById('out-terminal');
+            
+            outTerm.innerHTML = `<div style="color:var(--cyan);">[SYSTEM] Running ${filename}...</div>`;
             socket.emit('save_file', {filename, content});
-            btn.innerHTML = '<i data-lucide="loader" class="spin"></i> Deploying...';
+            socket.emit('run_code', {filename});
+            
+            btn.innerHTML = '<i data-lucide="loader" class="spin"></i> Running...';
             lucide.createIcons();
-            setTimeout(() => {
-                btn.innerHTML = '<i data-lucide="rocket"></i> Deploy Engine';
-                lucide.createIcons();
-            }, 2000);
+            setTimeout(() => { btn.innerHTML = '<i data-lucide="play"></i> Run Code'; lucide.createIcons(); }, 1500);
         }
     </script>
 </body>
-    </html>
-    
+</html>
