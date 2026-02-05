@@ -5,13 +5,14 @@ from flask import Flask, render_template, request, session, redirect, flash
 from flask_socketio import SocketIO, emit
 from werkzeug.security import generate_password_hash, check_password_hash
 
-app = Flask(__name__, template_folder='UI')
+# ফ্লাস্ক অটোমেটিক 'templates' ফোল্ডার চিনে নেবে
+app = Flask(__name__)
 app.config['SECRET_KEY'] = secrets.token_hex(16)
 
-# Render-এ SocketIO এর জন্য 'threading' মোড বেশি স্টেবল
+# লোকাল এবং সার্ভার দুই জায়গার জন্যই স্টেবল সেটিংস
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading')
 
-# ডাটা ফাইল পাথ (Render Disk না থাকলে সাময়িকভাবে কাজ করবে)
+# ডাটা ফাইল পাথ (এটি মেইন ডিরেক্টরিতেই থাকবে)
 USER_DATA = 'users.json'
 SETTINGS_FILE = 'settings.json'
 
@@ -65,10 +66,29 @@ def register():
             return redirect('/login')
     return render_template('register.html')
 
-# অন্য সব রাউট আগের মতোই থাকবে...
-# [বাকি রাউটগুলো এখানে যুক্ত করে নিন]
+# --- Admin & Other Routes ---
+@app.route('/admin')
+def admin():
+    if not session.get('admin'): return redirect('/login')
+    return render_template('admin.html', settings=get_settings())
+
+@app.route('/profi')
+def profi():
+    if 'user' not in session: return redirect('/login')
+    return render_template('profi.html')
+
+@app.route('/myliber')
+def myliber():
+    if 'user' not in session: return redirect('/login')
+    return render_template('myliber.html')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect('/')
 
 if __name__ == '__main__':
-    # Render-এর পোর্টের জন্য ডাইনামিক কনফিগারেশন
-    port = int(os.environ.get('PORT', 5000))
-    socketio.run(app, host='0.0.0.0', port=port)
+    # এটি লোকাল হোস্টে রান করলে ৫০০৩ পোর্ট ব্যবহার করবে (অথবা আপনার পছন্দমতো)
+    # আর রেন্ডারে দিলে তাদের নিজস্ব পোর্ট ব্যবহার করবে
+    port = int(os.environ.get('PORT', 5003)) 
+    socketio.run(app, host='0.0.0.0', port=port, debug=True)
