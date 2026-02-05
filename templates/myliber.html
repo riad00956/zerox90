@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Libraries | Cyber 20 UN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg: #020617; --purple: #8b5cf6; --blue: #3b82f6; --cyan: #06b6d4;
+            --text: #f8fafc; --glass: rgba(15, 23, 42, 0.7); --border: rgba(255, 255, 255, 0.1);
+        }
+        * { box-sizing: border-box; transition: all 0.3s ease; }
+        body {
+            margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg);
+            color: var(--text); min-height: 100vh;
+        }
+
+        .container { max-width: 850px; margin: 40px auto; padding: 20px; }
+
+        /* Header Area */
+        .lib-header {
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--glass); backdrop-filter: blur(20px);
+            padding: 25px; border-radius: 24px; border: 1px solid var(--border);
+            margin-bottom: 30px;
+        }
+
+        .lib-card {
+            background: var(--glass); border: 1px solid var(--border);
+            border-radius: 24px; padding: 30px;
+        }
+
+        .lib-list { list-style: none; padding: 0; margin-top: 20px; }
+        .lib-item {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255, 255, 255, 0.03); padding: 15px 20px;
+            border-radius: 15px; border: 1px solid var(--border); margin-bottom: 12px;
+        }
+        .lib-info { display: flex; align-items: center; gap: 15px; }
+        .lib-icon {
+            width: 35px; height: 35px; background: rgba(139, 92, 246, 0.2);
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            color: var(--purple);
+        }
+
+        .status-pill {
+            background: rgba(16, 185, 129, 0.1); color: #10b981;
+            padding: 4px 12px; border-radius: 50px; font-size: 11px;
+            font-weight: 600; border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-back {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: var(--text); text-decoration: none; font-size: 14px;
+            opacity: 0.7; margin-bottom: 20px;
+        }
+        .btn-back:hover { opacity: 1; color: var(--purple); }
+
+        .empty-state { text-align: center; padding: 40px; opacity: 0.5; }
+        .copyright { text-align: center; margin-top: 50px; opacity: 0.4; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="/" class="btn-back"><i data-lucide="arrow-left" size="16"></i> Back to IDE</a>
+
+        <div class="lib-header">
+            <div style="display:flex; align-items:center; gap:15px;">
+                <div style="background:linear-gradient(45deg, var(--purple), var(--blue)); padding:10px; border-radius:12px;">
+                    <i data-lucide="package" color="white"></i>
+                </div>
+                <div>
+                    <h2 style="margin:0; font-size:22px;">My <span style="color:var(--cyan)">Libraries</span></h2>
+                    <p style="margin:0; font-size:12px; opacity:0.6;">Manage your Python environment packages</p>
+                </div>
+            </div>
+            <div class="status-pill">ENVIRONMENT ACTIVE</div>
+        </div>
+
+        <div class="lib-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <span style="font-weight:600; font-size:14px;">Installed Packages</span>
+                <i data-lucide="refresh-cw" size="16" style="cursor:pointer; opacity:0.5;"></i>
+            </div>
+            
+            <ul class="lib-list" id="libraryList">
+                <li class="lib-item">
+                    <div class="lib-info">
+                        <div class="lib-icon"><i data-lucide="box" size="18"></i></div>
+                        <span style="font-family:'Fira Code'; font-size:14px;">python-telegram-bot</span>
+                    </div>
+                    <span style="font-size:11px; opacity:0.5;">v. Latest</span>
+                </li>
+                <li class="lib-item">
+                    <div class="lib-info">
+                        <div class="lib-icon"><i data-lucide="box" size="18"></i></div>
+                        <span style="font-family:'Fira Code'; font-size:14px;">requests</span>
+                    </div>
+                    <span style="font-size:11px; opacity:0.5;">v. Latest</span>
+                </li>
+                <li class="lib-item">
+                    <div class="lib-info">
+                        <div class="lib-icon"><i data-lucide="box" size="18"></i></div>
+                        <span style="font-family:'Fira Code'; font-size:14px;">flask-socketio</span>
+                    </div>
+                    <span style="font-size:11px; opacity:0.5;">v. Latest</span>
+                </li>
+            </ul>
+
+            <div class="empty-state" id="emptyMsg" style="display:none;">
+                <i data-lucide="package-search" size="40" style="margin-bottom:10px;"></i>
+                <p>No custom libraries installed yet.</p>
+            </div>
+        </div>
+
+        <div class="copyright">
+            &copy; 2026 <strong>CyberIDE</strong>. <br> Powered by SQL Package Tracker.
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        
+        // এখানে আপনি ভবিষ্যতে সকেট বা ফেচ ব্যবহার করে SQL থেকে ডাটা রেন্ডার করতে পারবেন।
+        // বর্তমানে ৩টি উদাহরণ স্ট্যাটিকভাবে দেওয়া হয়েছে।
+    </script>
+</body>
+</html>
